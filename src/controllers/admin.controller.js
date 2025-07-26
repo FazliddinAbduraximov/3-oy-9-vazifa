@@ -13,13 +13,7 @@ class AdminController extends BaseController {
 
     async createAdmin(req, res) {
         try {
-            const { error, _value } = validator.create(req.body);
-            if (error) {
-                return res.status(422).json({
-                    statusCode: 422,
-                    message: error?.details[0]?.message || 'Error input validation'
-                })
-            }
+            
             const { username, email, password } = req.body;
             const existsUsername = await adminModel.findOne({ username })
             if (existsUsername) {
@@ -56,13 +50,6 @@ class AdminController extends BaseController {
 
     async signIn(req, res) {
         try {
-            const { error, _value } = validator.signIn(req.body);
-            if (error) {
-                return res.status(422).json({
-                    statusCode: 422,
-                    message: error?.details[0]?.message || 'input '
-                })
-            }
             const { username, password } = req.body;
             const admin = await adminModel.findOne({ username });
             const isMatchPassword = await cripto.decrypt(password, admin?.hashedPassword || "Error input validation");
