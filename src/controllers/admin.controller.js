@@ -6,6 +6,7 @@ import config from '../config/index.js';
 import token from '../utils/Token.js';
 import { AppError } from "../error/AppError.js";
 import { successRes } from "../utils/success-res.js";
+import { isValidObjectId } from "mongoose";
 
 
 class AdminController extends BaseController {
@@ -111,6 +112,52 @@ class AdminController extends BaseController {
             }
             res.clearCookie('refreshTokenAdmin');
             return successRes(res,{})
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async updateAdmin(req,res,next){
+        try {
+            const id=req.params?.id;
+            const admin =await this.checById(id);
+            const {username,email,password}=req.body;
+            if(username){
+                const exists=await adminModel.findOne({username});
+                if(exists && exists.username !== username){
+                    throw new AppError('Username already exists',409);
+                }
+            }
+            if(email){
+                const exists=await adminModel.findOne({email});
+                if(exists && exists.username !== username){
+                    throw new AppError('Email adress already exists',409);
+                }
+            }
+            let hashedPassword=admin.hashedPassword;
+            if(password){
+                hashedPassword=await cripto.encrypt(password);
+                delete req.body.password;
+            }
+            const updatedAdmin=await adminModel.findByIdAndUpdate(id,{...req.body,hashedPassword},{new:true})
+            successRes(res,updatedAdmin)
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async updataPasswordForAdmin(req,res,next){
+        try {
+            const id=req.params?.id;
+            const admin=await BaseController.checByIdPas(adminModel,id);
+            const {oldPassword,newPassword}=req.body;
+            const isMatchPassword=await cripto.decrypt(oldPassword,admin.hashedPassword);
+            if(!isMatchPassword){
+                throw new AppError('Incorrect old password',400)
+            }
+            const hashedPassword=await cripto.encrypt(newPassword);
+            const updatedAdmin=await adminModel.findByIdAndUpdate(id,hashedPassword,{new:true})
+            return successRes(res,updatedAdmin)
         } catch (error) {
             next(error)
         }

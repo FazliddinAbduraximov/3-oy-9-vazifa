@@ -51,7 +51,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ODFhMTI0ODZlOWM2YTE4OGYwZGI0MyIsInJvbGUiOiJTVVBQRVJBRE1JTiIsImlzQWN0aXYiOnRydWUsImlhdCI6MTc1MzUwODE0NCwiZXhwIjoxNzUzNTYyMTQ0fQ.ktWi9yokNUKRx2_OIROD2X0D-n-HKmPliChJysiCMDM",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ODFhMTI0ODZlOWM2YTE4OGYwZGI0MyIsInJvbGUiOiJTVVBQRVJBRE1JTiIsImlzQWN0aXYiOnRydWUsImlhdCI6MTc1MzYwODM2OSwiZXhwIjoxNzUzNjYyMzY5fQ.O4-bEsSvZ3JtgOGoEf7EavefFXKBPxU18vDYqDB6uxw",
 									"type": "string"
 								}
 							]
@@ -87,7 +87,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ODQ1MGJiNjg5YTQzYmQ3MDViYTI2YyIsInJvbGUiOiJBRE1JTiIsImlzQWN0aXYiOnRydWUsImlhdCI6MTc1MzUwOTcwMywiZXhwIjoxNzUzNTYzNzAzfQ.jtIdSfK6u6AmWQqq6-MbVR748qYKENccWcitg3W0dyo",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ODFhMTI0ODZlOWM2YTE4OGYwZGI0MyIsInJvbGUiOiJTVVBQRVJBRE1JTiIsImlzQWN0aXYiOnRydWUsImlhdCI6MTc1MzYyMDY0OSwiZXhwIjoxNzUzNjc0NjQ5fQ.4lKENYV1rPhT55q94w8mDJv46oVY5P2cjDJtD6w20es",
 									"type": "string"
 								}
 							]
@@ -113,13 +113,23 @@
 					"response": []
 				},
 				{
-					"name": "update",
+					"name": "updateAdmincha",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ODFhMTI0ODZlOWM2YTE4OGYwZGI0MyIsInJvbGUiOiJTVVBQRVJBRE1JTiIsImlzQWN0aXYiOnRydWUsImlhdCI6MTc1MzYxMTM2MywiZXhwIjoxNzUzNjY1MzYzfQ.t6iLXo5h33aJuHlV7eFYyfXa8kTedsPMt2NsWKIDa8g",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PATCH",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n \"username\":\"Admin\",\n    \"email\":\"admin@gmail.com\",\n    \"hashedPassword\":\"1234d\"\n}",
+							"raw": "{\n    \"oldPassword\":\"Shuxrat1234\",\n    \"newPassword\":\"Shuxrat12345\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -127,14 +137,15 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseURL}}/api/admin/6880e0943134605a78a05e4c",
+							"raw": "{{baseURL}}/api/admin/password/68858b149476c917cfdb26b7",
 							"host": [
 								"{{baseURL}}"
 							],
 							"path": [
 								"api",
 								"admin",
-								"6880e0943134605a78a05e4c"
+								"password",
+								"68858b149476c917cfdb26b7"
 							]
 						}
 					},
@@ -167,7 +178,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ODFhMTI0ODZlOWM2YTE4OGYwZGI0MyIsInJvbGUiOiJTVVBQRVJBRE1JTiIsImlzQWN0aXYiOnRydWUsImlhdCI6MTc1MzUxMzMzNywiZXhwIjoxNzUzNTY3MzM3fQ.CG5GovR6j8o_aCfH_ueNMTZMUMhvV5GjbOVsDrnD3K0",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ODFhMTI0ODZlOWM2YTE4OGYwZGI0MyIsInJvbGUiOiJTVVBQRVJBRE1JTiIsImlzQWN0aXYiOnRydWUsImlhdCI6MTc1MzU4MTcwMiwiZXhwIjoxNzUzNjM1NzAyfQ.reAdHFbcvkKPu-FCykDS2kj8VUgMQk6usk34MG-uADc",
 									"type": "string"
 								}
 							]
@@ -183,7 +194,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n \"username\":\"Fazliddin1244w\",\n    \"email\":\"fazliddin1244w@gmail.com\",\n    \"password\":\"Fazliddin12344$\"\n}",
+							"raw": "{\n    \"username\":\"Faz\",\n    \"email\":\"faz@gmail.com\",\n    \"password\":\"Fazliddin1$\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"

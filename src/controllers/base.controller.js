@@ -27,14 +27,8 @@ export class BaseController {
     findById = async (req, res, next) => {
         try {
             const id = req.params?.id;
-            if (!isValidObjectId(id)) {
-                throw new AppError('Invalid objectId', 400);
-            }
-            const data = await this.modle.findById(id);
-            if (!data) {
-                throw new AppError('Not found', 404);
-            }
-            successRes(res,data);
+            const data=await this.checById(id)
+            return successRes(res,data);
         } catch (error) {
             next(error);
         }
@@ -43,14 +37,12 @@ export class BaseController {
     update = async (req, res, next) => {
         try {
             const id = req.params?.id;
-            if (!isValidObjectId(id)) {
-                throw new AppError('Invalid objectId', 400);
-            }
+            await this.checById(id);
             const data = await this.modle.findByIdAndUpdate(id, req.body, { new: true });
             if (!data) {
                 throw new AppError('Not found');
             }
-            successRes(res,data);
+            return successRes(res,data);
         } catch (error) {
             next(error);
         }
@@ -59,16 +51,36 @@ export class BaseController {
     delete = async (req, res, next) => {
         try {
             const id = req.params?.id;
-            if (!isValidObjectId(id)) {
-                throw new AppError('Invalid objectId', 400);
-            }
+            await this.checById(id);
             const data = await this.modle.findByIdAndDelete(id);
             if (!data) {
                 throw new AppError('Not found');
             }
-            successRes(res,data);
+            return successRes(res,data);
         } catch (error) {
             next(error);
         }
+    }
+
+    checById=async (id)=>{
+        if(!isValidObjectId(id)){
+            throw new AppError('invalid objectId')
+        }
+        const data=await this.modle.findById(id);
+        if(!data){
+            throw new AppError('Not found',404)
+        }
+        return data
+    }
+
+    static async checByIdPas(schmea, id){
+        if(!isValidObjectId(id)){
+            throw new AppError('invalid objectId')
+        }
+        const data=await schmea.findById(id);
+        if(!data){
+            throw new AppError('Not found',404)
+        }
+        return data
     }
 }

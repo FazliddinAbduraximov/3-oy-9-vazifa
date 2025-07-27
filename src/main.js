@@ -6,10 +6,14 @@ import cookieParser from 'cookie-parser';
 import { globalErrorHandle } from './error/global-error-hendle.js';
 import { pageError } from './error/page-not-found.error.js';
 import helmet from 'helmet';
+import cors from 'cors';
+
 
 const app=express();
 const PORT=config.PORT || 3001;
-
+app.use(cors({
+    origin:'*'
+}))
 app.use(helmet());
 app.use(express.json());
 app.use(cookieParser());
