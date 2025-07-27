@@ -4,6 +4,8 @@ import cripto from "../utils/Cripto.js";
 import validator from '../validation/AdminValidation.js'
 import config from '../config/index.js';
 import token from '../utils/Token.js';
+import { AppError } from "../error/AppError.js";
+import { successRes } from "../utils/success-res.js";
 
 
 class AdminController extends BaseController {
@@ -11,23 +13,17 @@ class AdminController extends BaseController {
         super(adminModel);
     }
 
-    async createAdmin(req, res) {
+    async createAdmin(req, res, next) {
         try {
-            
+
             const { username, email, password } = req.body;
             const existsUsername = await adminModel.findOne({ username })
             if (existsUsername) {
-                return res.status(409).json({
-                    statusCode: 409,
-                    message: 'Username already exists'
-                });
+                throw new AppError('Username already exists', 409)
             }
             const existsEmail = await adminModel.findOne({ email })
             if (existsEmail) {
-                return res.status(409).json({
-                    statusCode: 409,
-                    message: 'Email adress already exists'
-                });
+                throw new AppError('Email adress already exists', 409)
             }
             const hashedPassword = await cripto.encrypt(password);
             const admin = await adminModel.create({
@@ -35,34 +31,30 @@ class AdminController extends BaseController {
                 email,
                 hashedPassword
             });
-            return res.status(201).json({
-                statusCode: 201,
-                message: 'success',
-                data: admin
-            })
+            successRes(res,admin,201)
+        
         } catch (error) {
-            return res.status(500).json({
-                statusCode: 500,
-                message: error.message || 'intrnal server error'
-            });
+            next(error)
         }
     }
 
-    async signIn(req, res) {
+    async signIn(req, res, next) {
         try {
             const { username, password } = req.body;
             const admin = await adminModel.findOne({ username });
             const isMatchPassword = await cripto.decrypt(password, admin?.hashedPassword || "Error input validation");
             if (!isMatchPassword) {
-                return res.status(400).json({
-                    statusCode: 400,
-                    message: 'User or password incarrect'
-                })
+                throw new AppError('User or password incarrect',400);
             }
             const payload = { id: admin._id, role: admin.role, isActiv: admin.is_active };
             const accessToken = token.generateAccessToken(payload);
             const refreshToken = token.generateRefreshToken(payload);
             token.writeToCookie(res, 'refreshTokenAdmin', refreshToken, 30);
+            successRes(res,{
+                    accessToken,
+                    admin
+                })
+            
             return res.status(200).json({
                 statusCode: 200,
                 message: 'success',
@@ -72,95 +64,57 @@ class AdminController extends BaseController {
                 }
             })
         } catch (error) {
-            return res.status(500).json({
-                statusCode: 500,
-                message: error.message || 'intrnal server error'
-            });
+            next(error)
         }
     }
 
 
-    async generateAccessToken(req, res) {
+    async generateAccessToken(req, res, next) {
         try {
             const refreshToken = req.cookies?.refreshTokenAdmin;
             if (!refreshToken) {
-                return res.status(401).json({
-                    statusCode: 401,
-                    message: 'Refresh token not fount'
-                })
+                throw new AppError('Authorization error',401);
             }
             const verifiedToken = token.verifyToken(refreshToken, config.TOKEN.REFRESH_KEY);
             if (!verifiedToken) {
-                return res.status(401).json({
-                    statusCode: 401,
-                    message: 'Refresh token expire'
-                })
+                throw new AppError('Refresh token expire',401);
             }
             const admin = await adminModel.findById(verifiedToken?.id);
             if (!admin) {
-                return res.status(403).json({
-                    statusCode: 403,
-                    message: 'Forbidden user'
-                })
+                throw new AppError('Forbidden user',403);
             }
 
             const paylod = {
                 id: admin._id, role: admin.role, isActive: admin.isActive
             }
             const accessToken = token.generateAccessToken(paylod);
-            return res.status(200).json({
-                statusCode: 200,
-                message: 'success',
-                data: {
-                    token: accessToken
-                }
-            })
-
+            return successRes({token:accessToken})
         } catch (error) {
-            return res.status(500).json({
-                statusCode: 500,
-                message: error.message || 'intrnal server error'
-            });
+            next(error);
         }
     }
 
 
-    async signOut(req, res) {
+    async signOut(req, res, next) {
         try {
             const refreshToken = req.cookies?.refreshTokenAdmin;
             if (!refreshToken) {
-                return res.status(401).json({
-                    statusCode: 401,
-                    message: 'Refresh token not found'
-                });
+                throw new AppError('Refresh token not found',401);
             }
             const verifiedToken = token.verifyToken(refreshToken, config.TOKEN.REFRESH_KEY);
             if (!verifiedToken) {
-                return res.status(401).json({
-                    statusCode: 401,
-                    message: 'Refresh token expire'
-                });
+                throw new AppError('Refresh token expire',401);
             }
             const admin = await adminModel.findById(verifiedToken?.id);
             if (!admin) {
-                return res.status(403).json({
-                    statusCode: 403,
-                    message: 'Forbidden user'
-                });
+                throw new AppError('Forbidden user',403);
             }
             res.clearCookie('refreshTokenAdmin');
-            return res.status(200).json({
-                statusCode: 200,
-                message: 'success',
-                data: {}
-            });
-        } catch(error) {
-        return res.status(500).json({
-            statusCode: 500,
-            message: error.message || 'intrnal server error'
-        });
+            return successRes(res,{})
+        } catch (error) {
+            next(error)
+        }
     }
-}
 
 }
 

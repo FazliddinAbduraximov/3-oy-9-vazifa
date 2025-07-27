@@ -1,0 +1,216 @@
+{
+	"info": {
+		"_postman_id": "b26a2024-52f4-482c-bb77-937c0eda6ac0",
+		"name": "Online kurs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "41850885"
+	},
+	"item": [
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "singIn",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\":\"Fazliddin\",\n    \"password\":\"Fazliddin96\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/admin/signin",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"signin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAll",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ODFhMTI0ODZlOWM2YTE4OGYwZGI0MyIsInJvbGUiOiJTVVBQRVJBRE1JTiIsImlzQWN0aXYiOnRydWUsImlhdCI6MTc1MzUwODE0NCwiZXhwIjoxNzUzNTYyMTQ0fQ.ktWi9yokNUKRx2_OIROD2X0D-n-HKmPliChJysiCMDM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userName\":\"Fazliddin2\",\n    \"email\":\"fazlidd1in@gmail.com\",\n    \"password\":\"1234\"\n}"
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/admin/",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getId",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ODQ1MGJiNjg5YTQzYmQ3MDViYTI2YyIsInJvbGUiOiJBRE1JTiIsImlzQWN0aXYiOnRydWUsImlhdCI6MTc1MzUwOTcwMywiZXhwIjoxNzUzNTYzNzAzfQ.jtIdSfK6u6AmWQqq6-MbVR748qYKENccWcitg3W0dyo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userName\":\"Fazliddin2\",\n    \"email\":\"fazlidd1in@gmail.com\",\n    \"password\":\"1234\"\n}"
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/admin/6884515b689a43bd705ba273",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"6884515b689a43bd705ba273"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"username\":\"Admin\",\n    \"email\":\"admin@gmail.com\",\n    \"hashedPassword\":\"1234d\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/admin/6880e0943134605a78a05e4c",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"6880e0943134605a78a05e4c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/admin/68819c5c7ae5b6756cb34112",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"68819c5c7ae5b6756cb34112"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create admin",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ODFhMTI0ODZlOWM2YTE4OGYwZGI0MyIsInJvbGUiOiJTVVBQRVJBRE1JTiIsImlzQWN0aXYiOnRydWUsImlhdCI6MTc1MzUxMzMzNywiZXhwIjoxNzUzNTY3MzM3fQ.CG5GovR6j8o_aCfH_ueNMTZMUMhvV5GjbOVsDrnD3K0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"username\":\"Fazliddin1244w\",\n    \"email\":\"fazliddin1244w@gmail.com\",\n    \"password\":\"Fazliddin12344$\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/admin",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "localhost:3000",
+			"type": "default"
+		}
+	]
+}
