@@ -3,6 +3,7 @@ import { connectDb } from "../db/index.js";
 import adminModel from "../models/admin.model.js";
 import cripto from "../utils/Cripto.js";
 import config from "../config/index.js";
+import { Roles } from "../const/index.js";
 
 (async function () {
     try {
@@ -12,7 +13,7 @@ import config from "../config/index.js";
             username: config.SUPERADMIN.USERNAME,
             email: config.SUPERADMIN.EMAIL,
             hashedPassword,
-            role: 'SUPPERADMIN'
+            role:Roles.SUPPERADMIN 
         })
         console.log('Super admin success create');
         console.log(hashedPassword);

@@ -7,6 +7,11 @@ import token from '../utils/Token.js';
 import { AppError } from "../error/AppError.js";
 import { successRes } from "../utils/success-res.js";
 import { isValidObjectId } from "mongoose";
+import { generateOtp } from "../utils/generate-otp.js";
+import {sendOTPToMail} from '../utils/send-mail.js'
+import redis from "../utils/Redis.js";
+
+
 
 
 class AdminController extends BaseController {
@@ -69,7 +74,6 @@ class AdminController extends BaseController {
         }
     }
 
-
     async generateAccessToken(req, res, next) {
         try {
             const refreshToken = req.cookies?.refreshTokenAdmin;
@@ -94,7 +98,6 @@ class AdminController extends BaseController {
             next(error);
         }
     }
-
 
     async signOut(req, res, next) {
         try {
@@ -163,7 +166,62 @@ class AdminController extends BaseController {
         }
     }
 
+    async forgetPassword(req,res,next){
+        try {
+            const {email}=req.body;
+            const admin=await adminModel.findOne({email});
+            if(admin){
+                throw new AppError('Email not found',404);
+            }
+            const otp=generateOtp();
+            sendOTPToMail(email,otp);
+            await redis.setData(email,otp);
+            return successRes(res,{
+                email,
+                otp,
+                expireOTP:'5 minutes'
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async confirmOTP(req,res,next){
+        try {
+            const {email,otp}=req.body;
+            const checkOTP=await redis.getData(email);
+            if(checkOTP!=otp){
+                throw new AppError('OTP incorrect or expired',400)
+            }
+            await redis.deleteData(email);
+            return successRes(res,{
+                confirmPasswordURL:config.CONFIRM_PASSWORD_URL,
+                requesMethod:"PATCH",
+                email
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+
+    async confirmPassword(req,res,next){
+        try {
+            const {email,newPassword}=req.body;
+            const admin=await adminModel.findOne({email});
+            if(!admin){
+                throw new AppError('Emmail adres not found',404);
+            }
+            const hashedPassword=await cripto.encrypt(newPassword);
+            const updatedAdmin=await adminModel.findByIdAndUpdate(admin._id,{hashedPassword},{new:true});
+            return successRes(res,updatedAdmin);
+        } catch (error) {
+            next(error)
+        }
+    }
+
 }
+
 
 
 export default new AdminController;

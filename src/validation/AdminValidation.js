@@ -42,6 +42,11 @@ class AdminValidator {
             })
         })
     }
+    forgetPassword(){
+        return Joi.object({
+            email:Joi.string().email().required(),
+        })
+    }
 
 
     update() {
@@ -71,6 +76,18 @@ class AdminValidator {
             oldPassword: Joi.string().required(),
             newPassword: Joi.string().pattern(AdminValidator.passRegex).required()
         });
+    }
+    confirmOTP(){
+        return Joi.object({
+            email:Joi.string().email().required(),
+            otp:Joi.string().length(6).required()
+        })
+    }
+    confirmPassword(){
+        return Joi.object({
+            email:Joi.string().email().required(),
+            newPassword:Joi.string().pattern(AdminValidator.passRegex).optional().required()
+        })
     }
 }
 

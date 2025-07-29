@@ -75,7 +75,7 @@ export class BaseController {
 
     static async checByIdPas(schmea, id){
         if(!isValidObjectId(id)){
-            throw new AppError('invalid objectId')
+            throw new AppError('invalid objectId',400)
         }
         const data=await schmea.findById(id);
         if(!data){
